@@ -1,0 +1,102 @@
+﻿* {
+  margin: 0px;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.icerik {
+  padding: 15px;
+  justify-content: space-between;
+  width: 100%;
+  margin: auto;
+}
+
+.logo-noktalar {
+  display: flex;
+  flex-direction: column;
+}
+
+  .logo-noktalar img {
+    width: 90px;
+  }
+
+.sefer-bilgiler {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.fiyat {
+  display: flex;
+  flex-direction: column;
+}
+
+  .fiyat input {
+    border: none;
+    outline: none;
+    padding: 9px 25px;
+    background: red;
+    color: white;
+    font-size: 16px;
+  }
+
+.otobus-ozellikler {
+  display: flex;
+  flex-direction: row;
+  gap: 1px;
+  justify-content: space-between;
+  margin-top: 5px;
+  margin-bottom: 7px;
+}
+
+.otobus-ozellik-baslik {
+  font-weight: 700;
+}
+
+.ozellik-sol,
+.ozellik-sag {
+  display: flex;
+  flex-direction: column;
+}
+
+hr {
+  margin-bottom: 7px;
+  margin-top: 7px;
+}
+
+.sefer-guzergah-baslik {
+  font-weight: 600;
+  font-size: 17px;
+}
+
+.kalkis-icerik {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.kalkisNoktasi,
+.kalkisSaati {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.kalkis-span {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.btn-secondary {
+  width: 215px;
+  color: white;
+  background-color: red;
+  text-decoration: none;
+  outline: none;
+  border: none;
+}
+
+.modal-footer {
+  justify-content: center;
+}

@@ -1,0 +1,127 @@
+﻿* {
+  margin: 0px;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.main {
+  min-width: 700px
+}
+
+.header {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+}
+
+
+.bar {
+  background-color: #363e48;
+  width: 100%;
+  height: 40px;
+  margin-bottom: 2rem;
+}
+
+.icerik {
+  width: 75%;
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
+
+.icerik-baslik {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+  .icerik-baslik a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #000;
+    color: #363e48;
+    border-color: #ccc;
+    border-radius: 5px;
+    height: 35px;
+    padding: 10px;
+    line-height: 1;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+    width: 11rem;
+    text-decoration: none;
+    background-color: #ecf0f1;
+    font-size: 14px;
+  }
+
+.inform-bar {
+  background-color: #232b32;
+  font-family: "Raleway", sans-serif;
+  font-size: 14.4px;
+  font-weight: 700;
+  text-align: center;
+  margin: 0;
+  height: 35px;
+  line-height: 35px;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.otobus-listesi {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 1px solid #ddd;
+  background-color: #fff;
+  margin-bottom: 15px;
+  padding: 10px 20px
+}
+
+  .otobus-listesi img {
+    width: 140px;
+  }
+
+.saat {
+  display: flex;
+  flex-direction: column;
+}
+
+  .saat h3 {
+    font-size: 24px;
+    font-weight: 700;
+    font-family: "SourceSansPro-Bold", serif;
+  }
+
+.otobus-bilgiler {
+  display: flex;
+  gap: 10px;
+}
+
+.fiyat h3 {
+  font-size: 24px;
+  font-family: "SourceSansPro-Bold", serif;
+}
+
+.koltuk-sec-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+  .koltuk-sec-btn input {
+    border: 1px solid #d3472a;
+    background-color: #d3472a !important;
+    padding: 0 8px;
+    width: 97px;
+    height: 37px;
+    font-size: 15px;
+    font-family: "Raleway", sans-serif;
+    font-weight: 700;
+    line-height: 37px;
+    color: #fff;
+    cursor: pointer;
+  }
+
+  .koltuk-sec-btn a {
+    color: #363e48;
+  }

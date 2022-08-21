@@ -1,0 +1,128 @@
+﻿@using BiletAll.WebService.Dto.Response
+@model List<SeferlerResponseDTO>
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Seferler</title>
+    <link href="/css/sefer.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+</head>
+<body>
+    <div id="modalPlaceHolder" aria-hidden="true"></div>
+    <div class="main">
+        <div class="header">
+            <img src="~/img/balogo.png" alt="">
+        </div>
+        <div class="bar">
+
+        </div>
+        <div class="icerik">
+            <div class="icerik-baslik">
+                <a href="javascript:void(0)" onclick="FiyataGoreSirala()"><i class="fas fa-sort"></i> Fiyata Göre Sırala</a>
+                <a href="javascript:void(0)" onclick="SaateGoreSirala()"><i class="fas fa-sort"></i> Saate Göre Sırala</a>
+                <a href="javascript:void(0)" onclick="SeferGetir('Gece')"><i class="fas fa-moon"></i> Gece</a>
+                <a href="javascript:void(0)" onclick="SeferGetir('Sabah')"><i class="fas fa-cloud-moon"></i> Sabah</a>
+                <a href="javascript:void(0)" onclick="SeferGetir('Tumu')"><i class="fas fa-th-list"></i> Tümü</a>
+                <a style="background: red;color: white;" href="/Home/PnrSorgulama">İade / Değişiklik</a>
+            </div>
+            <h4 class="inform-bar">Lütfen gidiş seferini seçiniz</h4>
+            
+            @if (Model != null && Model.Count > 0)
+            {
+                Random rnd = new Random();
+                <div class="ana-liste">
+                    @foreach (var item in Model)
+                    {
+                        int r = rnd.Next(300,600);
+                        decimal _fiyat = item.Fiyat + r;
+
+
+                        <div class="otobus-listesi" data-vakit="@item.Vakit" data-fiyat="@_fiyat" date-saat="@item.Saat">
+
+                            <img src="@item.Logo" alt="">
+                            <div class="saat">
+                                @*<h3>@item.Saat.ToString("dd.MM.yyy HH:mm")</h3>*@
+                                <h3>@item.Saat.ToString("HH:mm")</h3>
+                                <span><i class="far fa-clock"></i>@item.SeyahatSuresi</span>
+                            </div>
+                            <div class="varis">
+                                <span>@item.KalkisNokta > @item.VarisNokta</span>
+                            </div>
+                            <div class="otobus-bilgiler">
+                                
+                                <i class="fas fa-wifi"></i>
+                                <i class="fas fa-plug"></i>
+                                <i class="fas fa-tv"></i>
+                                <i class="fas fa-chair-office"> @item.OtobusKoltukYerlesim</i>
+                            </div>
+                            <div class="Fiyat">
+                                <h3>@_fiyat TL</h3>
+                            </div>
+                            <div class="koltuk-sec-btn">
+                                <input type="button" value="Koltuk seç">
+                                <a href="javascript:void(0)" data-varis="@item.VarisNokta" data-logo="@item.Logo" data-fiyat="@item.Fiyat" data-id="@item.KalkisNokta" data-saat="@item.Saat.ToString("HH:mm")" onclick="popupAc(this)">Detayları Göster</a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script>
+        function SeferGetir(vakit) {
+            $(".otobus-listesi").show();
+
+            if (vakit !== "Tumu") {
+                $(".otobus-listesi").hide();
+                $(".otobus-listesi[data-vakit='" + vakit + "']").show();
+            }
+        }
+
+        function FiyataGoreSirala() {
+            var result = $('.ana-liste .otobus-listesi').sort(function (a, b) {
+                var contentA = parseInt($(a).data('fiyat'));
+                var contentB = parseInt($(b).data('fiyat'));
+                return (contentA < contentB) ? -1 : (contentA > contentB) ? 1 : 0;
+            });
+            $('.ana-liste').html(result);
+        }
+
+
+        function popupAc(e) {
+
+            const kalkisNokta = $(e).data("id");
+            const logo = $(e).data("logo");
+            const fiyat = $(e).data("fiyat");
+            const kalkisSaat = $(e).data("saat");
+            const varis = $(e).data("varis");
+
+            const placeHolderDiv = $('#modalPlaceHolder');
+            $.ajax({
+                type: 'GET',
+                dataType: 'html',
+                url: '/Home/SeferDetay/',
+                success: function (data) {
+                    placeHolderDiv.html(data);
+                    placeHolderDiv.find(".modal").modal('show');
+                    placeHolderDiv.find("#kalkis-noktasi").text(kalkisNokta);
+                    placeHolderDiv.find("#varis-noktasi").text(varis);
+                    placeHolderDiv.find(".kalkis-saat").text(kalkisSaat);
+                    placeHolderDiv.find("#kalkis-varis").text(kalkisNokta + ">" + varis);
+
+                }
+            });
+        }
+    </script>
+</body>
+</html>

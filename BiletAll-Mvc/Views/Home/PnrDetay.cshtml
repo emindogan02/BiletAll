@@ -1,0 +1,140 @@
+﻿@using BiletAll.WebService.Dto.Response
+@model List<PnrResponseDTO>
+
+@{
+  Layout = null;
+  var fiyat = @Model[0].Fiyat * @Model.Count;
+}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width" />
+  <link href="/css/pnrdetay.css" rel="stylesheet" />
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+        integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer" />
+  <title>PnrDetay</title>
+</head>
+<body>
+  <div class="main">
+    <div class="logo">
+      <img src="~/img/balogo.png" alt="" />
+    </div>
+    <div class="icerik">
+      <div class="biletbilgileri">
+        <div class="kalkisvaris">
+          <div>
+            <span>@Model[0].KalkisNokta - @Model[0].VarisNokta (AŞTİ)</span>
+            <span>@Model[0].Saat</span>
+          </div>
+          <span>@Model[0].PnrNo</span>
+        </div>
+        <div class="biletdetay">
+          <div class="logo2">
+            <img src="@Model[0].Logo" alt="" />
+            <span>Koltuk Tipi : 2+1</span>
+          </div>
+          <div class="otobusvarissaat">
+            <span class="kalkisvarisyeri">@Model[0].KalkisNokta</span>
+            <div class="otobus-logo">
+              <span>Yaklaşık seyahat süresi @Model[0].YaklasikSure Saat</span>
+              <i style="font-size: 30px;" class="fas fa-bus"></i>
+            </div>
+            <span class="kalkisvarisyeri">@Model[0].VarisNokta</span>
+          </div>
+        </div>
+        <div class="epostatel">
+          <span><b>Eposta : @Model[0]?.Email</b></span>
+          <span><b>Eposta : @Model[0]?.Telefon</b></span>
+        </div>
+      </div>
+      <div class="altbilgi">
+        <p style="margin-bottom: 5px">
+          <i class="fas fa-info-circle" style="font-size: 11px"></i>
+          Otobüs tipi, güzergah ve seyahat süresi operasyonel zorunluluklardan
+          dolayı değişebilir.
+        </p>
+        <p style="color: red">
+          <i class="fas fa-info-circle" style="font-size: 11px"></i>
+          SAYIN YOLCULARIMIZ.İKİLİ KOLTUKLAR AİLELER İÇİNDİR.AİLE OLMADIĞINIZ
+          HALDE BU KOLTUKLARI SATIN ALMANIZ DURUMUNDA YASAL SORUNLULUK SİZE
+          AİTTİR.
+        </p>
+        <div class="odeme-bilgi">
+          <span class="toplamfiyat">TOPLAM ÜCRET : <b>@fiyat TL</b></span>
+        </div>
+      </div>
+
+      <div class="yolcubilgileri">
+        @if (Model != null && Model.Count > 0) {
+          @foreach (var item in Model) {
+            <div class="yolcuicon">
+              <i class="fas fa-suitcase-rolling"></i>
+              <span style="font-family: 'Raleway'; font-weight: 400; font-size: 16px">Yolcu Bilgileri</span>
+            </div>
+            <table>
+              <thead>
+                <tr class="yolcu-bar">
+                  <th>Yolcu Adı</th>
+                  <th>Durum</th>
+                  <th>Koltuk</th>
+                  <th>E-Bilet No</th>
+                  <th>Servis İsteği</th>
+                  <th>Bilet İşlemlerim</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="td-list">
+                  <td>@item.YolcuAd</td>
+                  <td>@item?.Durum</td>
+                  <td>@item?.KoltukNo</td>
+                  <td></td>
+                  <td></td>
+                  <td class="buttons">
+                    <p class="iptal-btn">İptal Et</p>
+                    <p class="acigaal">Açığa Al</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+
+
+            <div class="yolcubilgileri">
+              <div class="yolcuicon">
+                <i class="far fa-id-card"></i>
+                <span style="font-family: 'Raleway'; font-weight: 400; font-size: 16px">Sefer Bilgileri</span>
+              </div>
+
+              <table>
+                <thead>
+                  <tr class="yolcu-bar">
+                    <th>Sefer Süresi</th>
+                    <th>Sefer Tipi</th>
+                    <th>Sefer No</th>
+                    <th>Cinsiyet</th>
+                    <th>Peron</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="td-list">
+                    <td>@item?.YaklasikSure saat</td>
+                    <td>@item?.SeferTipi</td>
+                    <td>375853</td>
+                    <td>
+                      @item?.Cinsiyet
+                    </td>
+                    <td>@item?.Peron</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          }
+        }
+      </div>
+    </div>
+  </div>
+</body>
+</html>
