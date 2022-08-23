@@ -41,7 +41,7 @@ namespace BiletAll_Mvc.Controllers {
 
     [HttpGet]
     public IActionResult Seferler() {
-      List<SeferlerResponseDTO>? seferler = JsonConvert.DeserializeObject<List<SeferlerResponseDTO>>((string)TempData["Seferler"]);
+      SeferlerResponseDTO? seferler = JsonConvert.DeserializeObject<SeferlerResponseDTO>((string)TempData["Seferler"]);
       return View(seferler);
     }
 

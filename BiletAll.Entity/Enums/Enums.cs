@@ -16,8 +16,7 @@ namespace BiletAll.Entity.Enums {
       İptalEdildi = 3,
     }
     public enum SeferTipi {
-      Molalı = 1,
-      Rezervasyonlu = 2
+      Molalı = 1
     }
   }
 }

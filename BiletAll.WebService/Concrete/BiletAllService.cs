@@ -1,4 +1,5 @@
-﻿using BiletAll.Entity.Context;
+﻿using AutoMapper;
+using BiletAll.Entity.Context;
 using BiletAll.Entity.Enums;
 using BiletAll.Entity.Models;
 using BiletAll.WebService.Abstract;
@@ -13,13 +14,14 @@ namespace BiletAll.WebService.Concrete {
     private readonly ApplicationDbContext _db;
     private BiletAllReference.ServiceSoapClient _webService;
     private string xmlYetki = "<Kullanici><Adi>stajyerWS</Adi><Sifre>2324423WSs099</Sifre></Kullanici>";
-
-    public BiletAllService(ApplicationDbContext db) {
+    private readonly IMapper _mapper;
+    public BiletAllService(ApplicationDbContext db, IMapper mapper) {
       _webService = new BiletAllReference.ServiceSoapClient(BiletAllReference.ServiceSoapClient.EndpointConfiguration.ServiceSoap);
       _db = db;
+      _mapper = mapper;
     }
 
-    public async Task<List<SeferlerResponseDTO>?> SeferAraAsync(SeferAraRequest request) {
+    public async Task<SeferlerResponseDTO?> SeferAraAsync(SeferAraRequest request) {
       try {
         string gidisDate = request.GidisDate.ToString("yyyy-MM-dd");
         string seferGetir = @"<Sefer>
@@ -37,7 +39,10 @@ namespace BiletAll.WebService.Concrete {
         XmlSerializer seferSerializer = new XmlSerializer(typeof(Seferler));
         TextReader seferReader = new StringReader(result.Body.StrIsletResult);
         Seferler? seferler = (Seferler?)seferSerializer.Deserialize(seferReader);
-        List<SeferlerResponseDTO> dto = new List<SeferlerResponseDTO>();
+
+        SeferlerResponseDTO dto = new();
+        dto.Seferler = new List<SeferlerDTO>();
+
         if (seferler != null && seferler.SeferListesi != null && seferler.SeferListesi.Count > 0) {
           foreach (var sefer in seferler.SeferListesi) {
             string seyahatSuresi = "";
@@ -46,22 +51,14 @@ namespace BiletAll.WebService.Concrete {
             } else if (sefer.SeyahatSuresiGosterimTipi == 2) {
               seyahatSuresi = sefer.SeyahatSuresi.ToString("HH:mm");
             }
+            var mapping = _mapper.Map<SeferlerDTO>(sefer);
+            mapping.SeyahatSuresi = seyahatSuresi;
+            mapping.Logo = "https://s3.eu-central-1.amazonaws.com/static.obilet.com/images/partner/4071-sm.png";
+            // Logo = "https://s3.eu-central-1.amazonaws.com/static.obilet.com/images/partner/" + sefer.FirmaNo + "-sm.png"
 
-            dto.Add(new SeferlerResponseDTO() {
-              Id = sefer.ID,
-              OtobusKoltukYerlesim = sefer.OtobusKoltukYerlesimTipi,
-              Fiyat = sefer.BiletFiyatiInternet,
-              FirmaAd = sefer.FirmaAdi,
-              KalkisNokta = sefer.KalkisNokta,
-              VarisNokta = sefer.VarisNokta,
-              Vakit = sefer.Vakit,
-              SeyahatSuresi = seyahatSuresi,
-              Saat = sefer.YerelInternetSaat,
-              Logo = "https://s3.eu-central-1.amazonaws.com/static.obilet.com/images/partner/4071-sm.png"
-
-              // Logo = "https://s3.eu-central-1.amazonaws.com/static.obilet.com/images/partner/" + sefer.FirmaNo + "-sm.png"
-            });
+            dto.Seferler!.Add(mapping);
           }
+          dto.OtobusOzellikler = _mapper.Map<List<OtobusOzellik>>(seferler.OTipOzellik);
           return dto;
         }
         return null;

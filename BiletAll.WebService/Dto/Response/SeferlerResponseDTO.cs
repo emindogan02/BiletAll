@@ -1,14 +1,12 @@
-﻿namespace BiletAll.WebService.Dto.Response {
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BiletAll.WebService.Dto.Response {
   public class SeferlerResponseDTO {
-    public int Id { get; set; }
-    public string? Logo { get; set; }
-    public string? FirmaAd { get; set; }
-    public string? Vakit { get; set; }
-    public string? VarisNokta { get; set; }
-    public string? KalkisNokta { get; set; }
-    public decimal Fiyat { get; set; }
-    public DateTime Saat { get; set; }
-    public string? OtobusKoltukYerlesim { get; set; }
-    public string? SeyahatSuresi { get; set; }
+    public List<SeferlerDTO>? Seferler { get; set; }
+    public List<OtobusOzellik>? OtobusOzellikler { get; set; }
   }
 }
