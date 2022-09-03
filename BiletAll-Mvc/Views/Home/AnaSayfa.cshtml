@@ -1,92 +1,137 @@
 ﻿@using BiletAll.WebService.Models
 @model List<KaraNokta>
 @{
-    Layout = null;
+  Layout = null;
 }
 
 <!DOCTYPE html>
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width" />
-    <link rel="stylesheet" href="index.css" />
-    <link href="~/css/main.css" rel="stylesheet" />
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
-    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
-    <title>Anasayfa</title>
+  <meta name="viewport" content="width=device-width" />
+  <link href="~/css/anasayfa.css" rel="stylesheet" />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.12.6/css/selectize.bootstrap3.min.css" integrity="sha256-ze/OEYGcFbPRmvCnrSeKbRTtjG4vGLHXgOqsyLFTRjg=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous" />
+  <link rel="stylesheet" href="http://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css" />
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+  <title>Anasayfa</title>
 </head>
 <body>
-<div class="main">
+  <div class="main">
     <div class="arama-content">
-        <div class="biletall">
-            <img src="/img/balogo.png" alt="">
+      <div class="biletall">
+        <img src="/img/balogo.png" alt="">
+      </div>
+      <div class="bus">
+        <i class="fas fa-bus"></i>
+        <p><i class="fas fa-check-circle"></i> TEK YÖN</p>
+      </div>
+      <form class="form-etiket" id="form" action="/Home/Anasayfa" method="post">
+        <div class="kalkis-varis">
+          <div id="" class="nereden-nereye">
+            <span>Nereden</span>
+            <input class="kalkisVarisInput" type="text" id="gidisSelect" placeholder="İl yada İlçe Adı Yazın.." />
+            <input type="hidden" id="GidisID" name="GidisID" />
+          </div>
+
+          <a style="cursor: pointer" id="SwapButton"><i class="fas fa-exchange-alt"></i></a>
+
+          <div id="" class="nereden-nereye">
+            <span>Nereden</span>
+            <input class="kalkisVarisInput" type="text" id="varisSelect" placeholder="İl yada İlçe Adı Yazın.." />
+            <input type="hidden" id="VarisID" name="VarisID" />
+          </div>
         </div>
-        <div class="bus">
-            <i class="fas fa-bus"></i>
-            <p><i class="fas fa-check-circle"></i> TEK YÖN</p>
+        <div class="gidis-donus-tarih">
+          <div class="tarih">
+            <span>Gidiş Tarihi</span>
+            <input name="GidisDate" type="date" value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")">
+          </div>
+          <div></div>
+          <div class="tarih">
+            <span>Dönüş Tarihi</span>
+            <input name="VarisDate" disabled="disabled" type="date">
+          </div>
         </div>
-        <form class="form-etiket" id="form" action="/Home/Anasayfa" method="post">
-            <div class="kalkis-varis">
-                <div id="" class="nereden-nereye ">
-                    <span>Nereden</span>
-                    
-                    <select name="GidisID" id="gidisSelect"  onkeypress="selectFunc()">
 
-                        @foreach (var item in Model.Where(x => x.Ad.Contains("Kayseri") || x.Ad.Contains("İstanbul")))
-                        {
-                            <option name="@item.ID" value="@item.ID">@item.Ad</option>
-                        }
-                    </select>
-                </div>
+        <div class="otobus-ara-btn">
+          <input type="submit" value="Otobüs Bileti Ara">
+        </div>
 
-                <a style="cursor: pointer" id="SwapButton"><i class="fas fa-exchange-alt"></i></a>
-
-                <div id="" class="nereden-nereye">
-                    <span>Nereden</span>
-                   
-                    <select name="VarisID" id="varisSelect">
-                        @foreach (var item in Model.Where(x => x.Ad.Contains("Ankara") || x.Ad.Contains("İstanbul")))
-                        {
-                            <option name="@item.ID" value="@item.ID">@item.Ad</option>
-                        }
-                    </select>
-                </div>
-            </div>
-            <div class="gidis-donus-tarih">
-                <div class="tarih">
-                    <span>Gidiş Tarihi</span>
-                    <input name="GidisDate" type="date" value="@DateTime.Today.AddDays(1).ToString("yyyy-MM-dd")">
-                </div>
-                <div></div>
-                <div class="tarih">
-                    <span>Dönüş Tarihi</span>
-                    <input name="VarisDate" disabled="disabled"  type="date">
-                </div>
-            </div>
-
-            <div class="otobus-ara-btn">
-                <input  type="submit" value="Otobüs Bileti Ara">
-            </div>
-
-        </form>
+      </form>
     </div>
-</div>
+  </div>
 </body>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 
 <script>
-    $(document).ready(function () {
-        $('select').selectize({
-            sortField: 'text'
-        });
-    });
+  $(document).ready(function(){
 
-    $('#SwapButton').click(function(){
-        var options1 = $('#gidisSelect').html();
-        var option2 = $('#varisSelect').html();
-        $('#gidisSelect').html(option2);
-        $('#varisSelect').html(options1);
-    });
+     $('#gidisSelect').autocomplete({
+
+       source:function(request,response){
+         $.ajax({
+           url:'@Url.Action("Search","Home")',
+           dataType:"json",
+           data:{search:$("#gidisSelect").val()},
+           success:function(data){
+             response($.map(data,function(item){
+               return {
+                 label:item.ad,
+                 value:item.id
+               }
+             }))
+           },
+           error:function(xhr,status,error){
+             alert("Error");
+           }
+         })
+       },
+       select:function(event,ui){
+         this.value=ui.item.label,
+
+          $("#GidisID").val(ui.item.value);
+          return false;
+       }
+     });
+
+
+      $('#varisSelect').autocomplete({
+       source:function(request,response){
+         $.ajax({
+           url:'@Url.Action("Search","Home")',
+           dataType:"json",
+           data:{search:$("#varisSelect").val()},
+           success:function(data){
+             response($.map(data,function(item){
+               return {
+                 label:item.ad,
+                 value:item.id
+               }
+             }))
+           },
+           error:function(xhr,status,error){
+             alert("Error");
+           }
+         })
+       },
+       select:function(event,ui){
+         this.value=ui.item.label,
+          $("#VarisID").val(ui.item.value);
+          return false;
+       }
+     });
+   });
+
+   $('#SwapButton').click(function(){
+       var options1 = $('#gidisSelect').val();
+       var option2 = $('#varisSelect').val();
+       $('#gidisSelect').val(option2);
+       $('#varisSelect').val(options1);
+   });
+
+
 </script>
 </html>

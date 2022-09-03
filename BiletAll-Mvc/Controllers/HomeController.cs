@@ -19,17 +19,26 @@ namespace BiletAll_Mvc.Controllers {
     [HttpGet]
     public async Task<IActionResult> AnaSayfa() {
       string cacheKey = "karanoktalar";
-      if (_cache.TryGetValue(cacheKey, out List<KaraNokta> data)) {
-        return View(data);
-      } else {
-        var karanoktalar = await _biletAllService.KaraNoktaGetirAsync();
-
-        var cacheEntryOptions = new MemoryCacheEntryOptions()
+      var karanoktalar = await _biletAllService.KaraNoktaGetirAsync();
+      var cacheEntryOptions = new MemoryCacheEntryOptions()
           .SetSlidingExpiration(TimeSpan.FromMinutes(1))
           .SetAbsoluteExpiration(TimeSpan.FromMinutes(1))
           .SetPriority(CacheItemPriority.Normal);
-        _cache.Set(cacheKey, karanoktalar, cacheEntryOptions);
-        return View(karanoktalar);
+      _cache.Set(cacheKey, karanoktalar, cacheEntryOptions);
+      return View();
+
+    }
+
+    [HttpGet]
+    public async Task<JsonResult> Search(string search) {
+      string cacheKey = "karanoktalar";
+        //string search = HttpContext.Request.Query["term"].ToString();
+      if (_cache.TryGetValue(cacheKey, out List<KaraNokta> data)) {
+        var datas = data.Where(x => x.Ad!.Contains(search));
+        return new JsonResult(datas);
+      } else {
+        var karanoktalar = await _biletAllService.KaraNoktaGetirAsync(search);
+        return new JsonResult(karanoktalar);
       }
     }
     [HttpPost]
@@ -58,9 +67,9 @@ namespace BiletAll_Mvc.Controllers {
     [HttpPost]
     public async Task<IActionResult> PnrSorgulama(PnrSorguRequestDTO request) {
       var result = await _biletAllService.PnrSorgulama(request);
-        TempData["PnrYolcu"] = JsonConvert.SerializeObject(result);
-        return RedirectToAction("PnrDetay", "Home");
-      
+      TempData["PnrYolcu"] = JsonConvert.SerializeObject(result);
+      return RedirectToAction("PnrDetay", "Home");
+
     }
 
     public IActionResult PnrDetay() {

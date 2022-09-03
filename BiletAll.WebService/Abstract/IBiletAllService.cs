@@ -4,7 +4,9 @@ using BiletAll.WebService.Models;
 
 namespace BiletAll.WebService.Abstract {
   public interface IBiletAllService {
+    Task<List<KaraNokta>?> KaraNoktaGetirAsync(string search);
     Task<List<KaraNokta>?> KaraNoktaGetirAsync();
+
     Task<SeferlerResponseDTO?> SeferAraAsync(SeferAraRequest request);
     Task<List<PnrResponseDTO>?> PnrSorgulama(PnrSorguRequestDTO request);
   }

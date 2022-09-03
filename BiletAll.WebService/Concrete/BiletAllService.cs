@@ -69,6 +69,24 @@ namespace BiletAll.WebService.Concrete {
 
     }
 
+    public async Task<List<KaraNokta>?> KaraNoktaGetirAsync(string search) {
+      try {
+        string xmlIslem = @"<KaraNoktaGetirKomut/>";
+        var result = await _webService.StrIsletAsync(xmlIslem, xmlYetki);
+        XmlSerializer serializer = new XmlSerializer(typeof(KaraNoktalar));
+        TextReader reader = new StringReader(result.Body.StrIsletResult);
+        KaraNoktalar? karanoktalar = (KaraNoktalar?)serializer.Deserialize(reader);
+
+        if (karanoktalar != null && karanoktalar.KaraNokta != null && karanoktalar.KaraNokta.Count > 0) {
+          var response = karanoktalar.KaraNokta.Where(x => x.Ad!.Contains(search)).ToList();
+          return response;
+        }
+        return null;
+      } catch (Exception) {
+        return null;
+      }
+
+    }
     public async Task<List<KaraNokta>?> KaraNoktaGetirAsync() {
       try {
         string xmlIslem = @"<KaraNoktaGetirKomut/>";
@@ -76,7 +94,9 @@ namespace BiletAll.WebService.Concrete {
         XmlSerializer serializer = new XmlSerializer(typeof(KaraNoktalar));
         TextReader reader = new StringReader(result.Body.StrIsletResult);
         KaraNoktalar? karanoktalar = (KaraNoktalar?)serializer.Deserialize(reader);
-        if (karanoktalar != null) {
+
+        if (karanoktalar != null && karanoktalar.KaraNokta != null && karanoktalar.KaraNokta.Count > 0) {
+
           return karanoktalar.KaraNokta;
         }
         return null;
